@@ -1,0 +1,28 @@
+sku,naam,categorie,prijs_eur
+SOL-TRC-001,Trench Marais,Manteaux,149.00
+SOL-TRC-002,Trench Ceinture Rive Gauche,Manteaux,165.00
+SOL-BLZ-001,Blazer Oversize Champs,Vestes,119.00
+SOL-BLZ-002,Blazer Croise Vendome,Vestes,135.00
+SOL-ROB-001,Robe Midi Saint-Germain,Robes,89.00
+SOL-ROB-002,Robe Longue Fleurie Tuileries,Robes,95.00
+SOL-ROB-003,Robe Courte Pigalle,Robes,69.00
+SOL-BLO-001,Blouse en Soie Opera,Hauts,75.00
+SOL-BLO-002,Chemise Blanche Odeon,Hauts,59.00
+SOL-PUL-001,Pull Cachemire Trocadero,Mailles,129.00
+SOL-PUL-002,Cardigan Cotele Bastille,Mailles,79.00
+SOL-JEA-001,Jean Taille Haute Rive Gauche,Pantalons,85.00
+SOL-JEA-002,Jean Droit Belleville,Pantalons,79.00
+SOL-PAN-001,Pantalon Large Concorde,Pantalons,89.00
+SOL-JUP-001,Jupe Plissee Montaigne,Jupes,65.00
+SOL-SAC-001,Sac Bandouliere Bastille,Accessoires,99.00
+SOL-SAC-002,Sac Cabas Cuir Sentier,Accessoires,139.00
+SOL-ECH-001,Echarpe Cachemire Montmartre,Accessoires,55.00
+SOL-FOU-001,Foulard Imprime Palais-Royal,Accessoires,39.00
+SOL-BER-001,Beret Classique Laine,Accessoires,29.00
+SOL-CEI-001,Ceinture Cuir Saint-Honore,Accessoires,45.00
+SOL-BOT-001,Bottines Cuir Montmartre,Chaussures,145.00
+SOL-BOT-002,Bottes Hautes Marais,Chaussures,189.00
+SOL-BAL-001,Ballerines Sentier,Chaussures,79.00
+SOL-BIJ-001,Collier Dore Vendome,Bijoux,35.00
+SOL-BIJ-002,Boucles d'Oreilles Perle Opera,Bijoux,25.00
+SOL-BIJ-003,Bracelet Fin Tuileries,Bijoux,19.00

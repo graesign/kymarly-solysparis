@@ -1,0 +1,7 @@
+click_id,campaign_id,adset_id,ad_id,landing_page,created_at
+clk_A1,TEST-CAMP-A,TEST-ADSET-A1,TEST-AD-A1,/collections/robes,2026-07-01T09:12:00+02:00
+clk_A2,TEST-CAMP-A,TEST-ADSET-A1,TEST-AD-A1,/products/robe-midi-saint-germain,2026-07-01T10:03:00+02:00
+clk_A3,TEST-CAMP-A,TEST-ADSET-A2,TEST-AD-A2,/collections/manteaux,2026-07-01T11:47:00+02:00
+clk_A2,TEST-CAMP-A,TEST-ADSET-A1,TEST-AD-A1,/products/robe-midi-saint-germain,2026-07-01T15:22:00+02:00
+clk_B1,TEST-CAMP-B,TEST-ADSET-B1,TEST-AD-B1,/products/bottes-hautes-marais,2026-07-01T12:30:00+02:00
+clk_B2,TEST-CAMP-B,TEST-ADSET-B1,TEST-AD-B1,/collections/chaussures,2026-07-01T14:05:00+02:00
