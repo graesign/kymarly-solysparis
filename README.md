@@ -241,7 +241,7 @@ Je dashboard toont omzetcijfers van een bedrijf. Een login die "werkt" is niet g
 
 ### Wat je minimaal bouwt
 
-- Een registratiepagina (e-mailadres + wachtwoord)
+- Een registratiepagina (e-mailadres of username + wachtwoord)
 - Een loginpagina
 - Uitloggen, waarbij de sessie ook echt aan de serverkant ongeldig wordt
 - Een dashboard dat zonder geldige sessie niets teruggeeft
@@ -250,21 +250,7 @@ Dat laatste punt is belangrijker dan het lijkt. Het is niet genoeg om de knop na
 
 ### Wachtwoorden opslaan
 
-Eén regel: **schrijf zelf geen crypto.** Gebruik `bcrypt` of `argon2`, in welke taal je ook werkt. Deze bibliotheken zijn jarenlang door specialisten getest en jouw versie is dat niet.
-
-Wat je wel moet begrijpen:
-
-**Hashen is niet versleutelen.** Versleutelen kun je terugdraaien, hashen niet. Bij het inloggen ontsleutel je het opgeslagen wachtwoord dus niet om te vergelijken. Je hasht wat de gebruiker net intypte en vergelijkt de twee hashes.
-
-**Waarom is dat beter?** Denk aan het scenario waarin je database uitlekt. Bij versleuteling ligt de sleutel meestal in dezelfde applicatie, dus de aanvaller heeft alles. Bij hashing heeft hij niets direct bruikbaars.
-
-**Een salt** is willekeurige data die per gebruiker bij het wachtwoord wordt gehasht. Zoek op waarom dat nodig is en wat *rainbow tables* zijn. `bcrypt` regelt de salt automatisch en stopt 'm in de hash-string, dus je hebt er geen aparte kolom voor nodig. Kijk een keer naar zo'n opgeslagen hash en zoek uit welk deel wat is.
-
-**Bewust traag.** Bcrypt heeft een instelbare *cost factor*. Hoger betekent langzamer, en langzamer betekent dat een aanvaller minder wachtwoorden per seconde kan proberen. Zoek uit wat op dit moment een redelijke waarde is en waarom die door de jaren heen omhoog is gegaan.
-
-### Wachtwoordbeleid
-
-Het advies is de afgelopen jaren veranderd. De regel "minstens één hoofdletter, één cijfer en één leesteken" leidt in de praktijk tot `Welkom01!`, en dat is slecht. Lengte doet meer dan complexiteit.
+Alle wachten moeten beveiligd opgeslagen worden
 
 Bepaal zelf je beleid, en kun je onderbouwen waarom. Denk na over: een minimumlengte, een maximum (waarom zou je die überhaupt hebben?), en of je bekende gelekte wachtwoorden wilt blokkeren.
 
@@ -290,7 +276,7 @@ Je sessiecookie heeft in beide gevallen deze eigenschappen nodig. Zoek per stuk 
 
 Dit is de kern van de opdracht. Hieronder staan zes aanvalscenario's. Schrijf voor elk op **wat de aanvaller doet** en **hoe jouw code het tegenhoudt**, en zorg dat die maatregel er ook daadwerkelijk in zit.
 
-1. Iemand probeert 10.000 wachtwoorden op het account `ishan@webshop.nl`. Wat merkt jouw applicatie daarvan, en wat doet ze?
+1. Iemand probeert 10.000 wachtwoorden op het account `email@webshop.nl`. Wat merkt jouw applicatie daarvan, en wat doet ze?
 
 2. Iemand voert bij registratie 500 willekeurige e-mailadressen in. Bij de bestaande adressen krijgt hij "dit account bestaat al", bij de rest niet. Wat heeft hij nu, en waarom is dat een probleem? (Zoek op: *user enumeration*)
 
@@ -341,68 +327,33 @@ Haal dit pas aan als alles hierboven af is. Het is een echte bonus, geen eis.
 ## 8. Fasering
 
 Werk van boven naar beneden. Ga niet naar de volgende fase voordat de vorige werkt.
+Dit is de manier hoe ik het zou aanmaken maar voel je vrij om het zelf te doen 
 
-**Fase 0 — Opzet (2–3 dagen)**
+**Fase 0 — Opzet**
 Git-repo, Postgres draaiend (lokaal via Docker of gratis bij Neon/Supabase), `.env` opgezet, applicatie start en maakt verbinding met de database. Meer niet. Als dit werkt, heb je de saaiste helft gehad.
 
-**Fase 1 — Database (3–4 dagen)**
+**Fase 1 — Database **
 Tabellen aanmaken via een migratiescript (geen handmatig klikken in een tool). Bijlage B inladen in `ad_spend`. Seed-script dat `visits` en `orders` genereert volgens de regels in de bijlage.
 
-**Fase 2 — Tracker (3–4 dagen)**
+**Fase 2 — Tracker**
 Endpoint of pagina die URL-parameters uitleest en als `visit` opslaat. Testen met de hand in je browser.
 
-**Fase 3 — Orders (2–3 dagen)**
+**Fase 3 — Orders **
 `POST /api/orders` die een bestelling ontvangt, valideert en opslaat inclusief `click_id`. Testen met Postman of `curl`.
 
-**Fase 4 — Berekening (4–5 dagen)**
+**Fase 4 — Berekening **
 De kern. Een query die per campagne omzet en uitgaven optelt en de ROAS berekent. Dit is een `JOIN` plus `GROUP BY`. Schrijf 'm eerst met de hand in psql voordat je 'm in code zet.
 
-**Fase 5 — Authenticatie (5–6 dagen)**
+**Fase 5 — Authenticatie **
 Registratie, login, uitloggen, sessies. Werk hoofdstuk 7 af inclusief `SECURITY.md`. Plan hier ruim tijd voor. Dit is het onderdeel waar je het langst op zult zitten en waar je het meeste van leert.
 
-**Fase 6 — Dashboard (4–5 dagen)**
+**Fase 6 — Dashboard**
 Een tabel met per campagne: naam, uitgaven, omzet, aantal bestellingen, ROAS. Kleur ROAS onder 1.0 rood. Alleen bereikbaar met een geldige sessie.
 
-**Fase 7 — Afronden (2–3 dagen)**
+**Fase 7 — Afronden **
 README, beide checklists aflopen, code opruimen, voorbereiden op de presentatie. Eventueel de 2FA-bonus als je tijd overhoudt.
 
----
 
-## 9. Definition of done
-
-Je bent klaar als iemand anders jouw repo kan clonen, `.env.example` kan kopiëren naar `.env`, de instructies in je README kan volgen, en binnen tien minuten een werkend dashboard met data ziet.
-
-Test dit echt. Zet je project op een andere computer neer, of laat iemand anders het proberen. Je zult verrast zijn wat er stukgaat.
-
----
-
-## 10. Vragen die je moet kunnen beantwoorden
-
-Bij de oplevering:
-
-1. Waarom mag een wachtwoord niet in de broncode? Wat kan er misgaan?
-2. Wat is het verschil tussen `.env` en `.env.example`, en waarom commit je er maar één?
-3. Wat is SQL-injectie? Laat in je eigen code zien hoe je het voorkomt.
-4. Waarom sla je een wachtwoord gehasht op in plaats van versleuteld?
-5. Wat is een salt en welk probleem lost het op?
-6. Laat je loginpagina zien. Hoe weet ik dat een account bestaat of niet? Als dat niet te zien is, hoe heb je dat opgelost?
-7. Ik heb je sessiecookie gestolen. Hoe lang kan ik ermee doen wat ik wil, en wat kun jij daaraan doen?
-8. Wat gebeurt er in jouw systeem met een bestelling zonder `click_id`? Waarom is die keuze verdedigbaar?
-9. Je ROAS voor campagne X is 0.4. Wat zou je de webshop-eigenaar adviseren?
-
-Vraag 9 is geen technische vraag. Dat is het punt. Je bouwt software voor iemand met een probleem, niet voor de code zelf.
-
----
-
-## 11. Als je klaar bent en meer wilt
-
-- Meerdere klikken vóór één bestelling: welke krijgt de eer? (Zoek op: *first-touch* vs *last-touch attributie*)
-- Attributievenster: een klik van 90 dagen geleden telt niet meer mee. Bouw dat in.
-- Grafiek van ROAS over tijd
-- Automatische dagelijkse import van mock-uitgaven via een geplande taak
-- Deploy naar een echte server met environment variables via de hosting-provider in plaats van een `.env`-bestand
-
----
 
 ## Bijlage: de mock-data
 
